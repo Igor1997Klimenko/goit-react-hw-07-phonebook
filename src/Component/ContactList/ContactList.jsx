@@ -6,17 +6,17 @@ import { useSelector } from 'react-redux';
 
 const ContactList = () => {
     const { data } = useGetContactsQuery();
-    const filterValue = useSelector((state) => state.apiContacts.filter)
+    const filterValue = useSelector((state) => state.contacts.filter)
 
     return(
         <ul className={s.ContactList}>
             {data &&
-                filterContacts(data, filterValue).map(({ id, name, avatar }) => (
-        <li key={id}>
+                filterContacts(data, filterValue).map(({ id, name, phone }) => (
+        <li className={s.ItemContacts} key={id}>
             <ContactListItem
                 id={id}
                 name={name}
-                avatar={avatar}
+                phone={phone}
             />
         </li>          
     ))}

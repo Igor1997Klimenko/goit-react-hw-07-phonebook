@@ -1,14 +1,15 @@
-import {useState} from 'react'
+import {useState,memo } from 'react'
 import styles from '../ContactForm/ContactForm.module.css'
-import { useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
-import { useAddContactsMutation } from '../../redux/contacts-api';
+import { useAddContactMutation, useGetContactsQuery } from '../../redux/contacts-api';
+import { BallTriangle } from 'react-loader-spinner';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ContactForm = () => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const contacts = useSelector((state) => state.contacts.items);
-    const [addContact] = useAddContactsMutation();
+    const { data: contacts } = useGetContactsQuery();
+    const [addContact, {isLoading}] = useAddContactMutation();
   
 const handleInputChange = e => {
         const { name, value } = e.target;
@@ -35,12 +36,16 @@ const handleSubmit = e => {
     addContact({ name, phone, id: nanoid() });
     setName('');
     setPhone('');
+
+    toast.success('Contact added!');
     };
     
-    const contactExits = () => {
+    const contactExits = () => 
         contacts.find(contact =>
             contact.name.toUpperCase() === name.toUpperCase() || contact.phone === phone);
-    }
+    
+        
+    
 
     return(
         <form className={styles.forma} onSubmit={handleSubmit}>
@@ -73,11 +78,13 @@ const handleSubmit = e => {
             </div>
             <button
                 type="submit"
-                className={styles.ButtonsContact}
-            >Add contact</button>
+                className={styles.ButtonsContact}>
+                {isLoading ? <BallTriangle color="#00BFFF" height={20} width={20} /> : 'Add contact'}
+            </button>
+            <Toaster position="top-right"/>
         </form>
     );
   }
 
 
-export default ContactForm;
+export default memo(ContactForm);

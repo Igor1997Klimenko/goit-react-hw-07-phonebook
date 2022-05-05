@@ -15,3 +15,8 @@
 .NumberContacts{
     padding-right: 10px;
 }
+
+.DeleteContact{
+    color: rgb(255, 160, 160);
+
+}

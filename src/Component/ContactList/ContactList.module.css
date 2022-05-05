@@ -2,3 +2,9 @@
     list-style: none;
     padding: 0;
 }
+
+.ItemContacts{
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+}
